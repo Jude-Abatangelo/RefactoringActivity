@@ -22,7 +22,7 @@ public class World
         cave.Exits.Add("west", "Forest");
 
         start.Items.Add("map");
-        forest.Items.Add("key");
+        forest.Items.AddRange(new[] { "key", "potion" });
         forest.Items.Add("potion");
         cave.Items.Add("sword");
 
@@ -99,26 +99,23 @@ public class World
         return false;
     }
 
-    public bool UseItem(Player player, string itemName)
+    if (!player.Inventory.Remove(itemName))
     {
-        if (player.Inventory.Contains(itemName))
-        {
-            if (itemName == "potion")
-            {
-                Console.WriteLine("Ouch! That tasted like poison!");
-                player.Health -= 10;
-                Console.WriteLine($"Your health is now {player.Health}.");
-            }
-            else
-            {
-                Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
-            }
-            player.Inventory.Remove(itemName);
-            return true;
-        }
-
         return false;
     }
+    
+    if (itemName == "potion")
+    {
+        Console.WriteLine("Ouch! That tasted like poison!");
+        player.Health -= 10;
+        Console.WriteLine($"Your health is now {player.Health}.");
+    }
+        else
+    {
+        Console.WriteLine($"The {itemName} disappears in a puff of smoke!");
+    }
+    
+        return true;
 
     public bool SolvePuzzle(Player player, string puzzleName)
     {
